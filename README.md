@@ -1,7 +1,7 @@
 QuatDualQuat Mathematica Package for Quaternions and Dual Quaternions
 ======================================================================
 
-#Description
+# Description
 
 Q&D (Quick and Dirty) Mathematica package for Quaternions and Dual Quaternions prompted mostly by not being
 able to easily use symbolics in the official Quaternion package. This package is simpler and does not
@@ -13,7 +13,7 @@ plain lists means things like scalar multiplication and norms can be provided by
 **Disclaimer** I haven't done much (any) Mathematica programming so the code could probably be improved upon
 
 
-#Functions
+# Functions
 
 ## Quaternions
 
