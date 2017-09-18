@@ -26,14 +26,15 @@ If[Not@ValueQ[QTimes::usage],QTimes::usage = "QTimes[Q1, Q2] returns the quatern
 
 If[Not@ValueQ[QSandwich::usage],QSandwich::usage = "QSandwich[Q, P] returns the quaternion as a 4-list representing the multiplication of quaternion Q, the 3-list P and the conjugate of Q."];
 
-If[Not@ValueQ[QRotate::usage],QRotate::usage = "QRotate[[p, axis, angle] returns the quaternion as a 4-list representing the rotation angle around axis (3-list) of a vector p (3-list)."];
+If[Not@ValueQ[QRotate::usage],QRotate::usage = "QRotate[[p, axis, angle] returns the quaternion as a 4-list representing the rotation angle around axis (3-list) of a point p (3-list)."];
 
 If[Not@ValueQ[QConjugate::usage],QConjugate::usage = "QConjugate[Q] returns the quaternion as a 4-list representing the conjugate of Q."];
 
 If[Not@ValueQ[QInverse::usage],QInverse::usage = "QInverse[Q] returns the quaternion as a 4-list representing the inverse of Q."];
 
-If[Not@ValueQ[QCollect::usage],QCollect::usage = "QCollect[Q, var] returns a list comprising a scalar/variable and q 4-list representing a quaternion.\
-The return values are the result of calling Collect[Q, var]."];
+If[Not@ValueQ[QCollect::usage],QCollect::usage = "QCollect[Q, var] returns a list comprising a scalar/variable and a 4-list representing a quaternion.\
+ The return values are the result of calling Collect[Q, var] on the quaternion components. If Collect cannot separate var from all the expressions in Q\
+  then 1 is returned as the first element of the return list"];
 
 If[Not@ValueQ[QString::usage],QString::usage = "QString[Q, format] returns a formatted string representation of the quaternion Q using format (defaults to TraditionalForm)."];
 
@@ -73,7 +74,6 @@ If[Not@ValueQ[DQNorm::usage],DQNorm::usage = "DQNorm[DQ] returns the norm of DQ.
 
 If[Not@ValueQ[DQString::usage],DQString::usage = "DQString[DQ, format] returns a formatted string representation of the dual quaternion DQ using format (defaults to TraditionalForm)."];
 
-DQStringCollect[DQ_, scalar_,format_:TraditionalForm] := QStringCollect[DQ[[1]], scalar, format]<>" + "<>"ϵ"QStringCollect[DQ[[2]], scalar, format]
 If[Not@ValueQ[DQStringCollect::usage],DQStringCollect::usage = "DQStringCollect[Q, var, format] returns a formatted string representation of the dual quaternion DQ using format (defaults to TraditionalForm)\
  after applying Collect(Q. var) to both components of DQ."];
 

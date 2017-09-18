@@ -30,7 +30,7 @@ Print["Multiply------"]
 qa ** qb
 qb ** qa
 
-In[87]:= Clear["Global`*"]
+Clear["Global`*"]
 Remove["Global`*"]
 
 <<QuatDualQuat`
@@ -82,7 +82,7 @@ DQNorm[d1]
 DQString[d1]
 DQStringCollect[d3, a]
 
-In[127]:= Clear["Global`*"]
+Clear["Global`*"]
 Remove["Global`*"]
 
 <<QuatDualQuat`
