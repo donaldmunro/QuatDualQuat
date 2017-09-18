@@ -1,0 +1,100 @@
+Clear["Global`*"]
+Remove["Global`*"]
+
+<<QuatDualQuat`
+
+(* Worked examples from Chapter 5 page 70 of Quaternions for Computer Graphics (Vince J, Springer 2011)*)
+qa = QCreate[2, -2, 3, -4];
+qb = QCreate[1, {-2, 5, -6}];
+Print["Add------"]
+QString[QAdd[qa, qb]]
+QString[QAdd[qa, -qb]]
+Print["Normalize------"]
+QString[Normalize[qa]]
+Print["Multiply------"]
+QString[QTimes[qa, qb]]
+QString[QTimes[qb, qa]]
+Print["Inverse------"]
+QString[QInverse[qa]]
+Print["========Using Quaternion Package======================="]
+Needs["Quaternions`"]
+Clear[qa, qb]
+qa = Quaternion[2, -2, 3, -4];
+qb = Quaternion[1, -2, 5, -6];
+Print["Add------"]
+qa + qb
+qa - qb
+Print["Normalize------"]
+1/Sqrt[Norm[qa]] *qa 
+Print["Multiply------"]
+qa ** qb
+qb ** qa
+
+In[87]:= Clear["Global`*"]
+Remove["Global`*"]
+
+<<QuatDualQuat`
+
+x = QCreate[x0, x1, x2, x3];
+y = QCreate[y0, {y1, y2, y3}];
+z = s QAdd[x, y]
+Print[QStringCollect[z, s]]
+QTimes[x, y]
+Z = QTimes[x, z]
+QCollect[Z, s]
+Print[QStringCollect[z, s]]
+ZZ = QCreate[s, s x2^2, s x3, s x4^2]
+QString[ZZ, TraditionalForm]
+QString[ZZ, InputForm]
+Print["Rotation------------------------------------"]
+(* From Chapter 7 page 99 of Quaternions for Computer Graphics (Vince J, Springer 2011)*)
+p = {2, 0, 0};
+axis = { 1/Sqrt[2], 0, 1/Sqrt[2]};
+QRotate[p, axis, Pi/2]
+Clear[p, v];
+p = QCreate[0, 2, 0, 0];
+v = QCreate[Cos[Pi/4], Sin[Pi/4] axis];
+QSandwich[v, p]
+Print["Using Quaternions Package (Symbolic doesn't work)=="]
+Needs["Quaternions`"]
+Clear[x, y, s]
+x = Quaternion[x0, x1, x2, x3];
+QuaternionQ[x] (* https://mathematica.stackexchange.com/questions/22275/fromquaternion-and-quaternionq-not-working-symbolically *)
+y = Quaternion[y0, y1, y2, y3];
+z = s  *(x + y)
+x ** y
+Clear["Global`*"]
+Remove["Global`*"]
+
+<<QuatDualQuat`
+
+p = QCreate[p0, p1, p2, p3];
+q = QCreate[q0, {q1, q2, q3}];
+r = QCreate[r0, r1, r2, r3];
+s = QCreate[s0, {s1, s2, s3}];
+d1 = DQCreate[p, q];
+d2 = DQCreate[r, s];
+d3 = a d2
+DQAdd[d1, d2]
+DQTimes[d1, d2]
+DQTimes[d1, DQConjugate[d1]]
+DQNorm[d1]
+DQString[d1]
+DQStringCollect[d3, a]
+
+In[127]:= Clear["Global`*"]
+Remove["Global`*"]
+
+<<QuatDualQuat`
+
+(*Example from http://web.cs.iastate.edu/~cs577/handouts/dual-quaternion.pdf*)
+Clear[r, t, p, dq, a, b, axis]
+axis = {1, 1, 1}
+r = QCreate[Cos[Pi/3], Sin[Pi/3]Normalize[axis]]
+T = { 0, 0, b}
+t = QCreate[0, T]
+dq = DQCreate[r, 1/2 QTimes[t, r]]
+p = {a, 0, 0}
+QQ = FullSimplify[DQSandwich[dq, p] ]
+DQString[QQ]
+DQString[FullSimplify[DQRigidTransform[p, axis, (2 Pi)/3, T] ]]
