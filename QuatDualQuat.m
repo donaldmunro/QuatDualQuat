@@ -28,6 +28,8 @@ If[Not@ValueQ[QSandwich::usage],QSandwich::usage = "QSandwich[Q, P] returns the 
 
 If[Not@ValueQ[QRotate::usage],QRotate::usage = "QRotate[[p, axis, angle] returns the quaternion as a 4-list representing the rotation angle around axis (3-list) of a point p (3-list)."];
 
+If[Not@ValueQ[QRotateBetween::usage],QRotateBetween::usage = "QRotateBetween[v1, v2, simplify:True] returns the quaternion as a 4-list representing the shortest arc rotation between two vectors v1 (3-list) and v2 (3-list). simplify specifies whether to run FullSimplify on the quaternion components."];
+
 If[Not@ValueQ[QConjugate::usage],QConjugate::usage = "QConjugate[Q] returns the quaternion as a 4-list representing the conjugate of Q."];
 
 If[Not@ValueQ[QInverse::usage],QInverse::usage = "QInverse[Q] returns the quaternion as a 4-list representing the inverse of Q."];
@@ -97,6 +99,17 @@ QSandwich[Q_, P_] := QTimes[QTimes[Q, P], QConjugate[Q]]
 
 QRotate[p_, axis_, angle_] := { 0, (1 - Cos[angle]) Dot[axis, p] axis + Cos[angle] p + Sin[angle] Cross[axis, p] }
 
+QRotateBetween[v1_, v2_, simpl_:True] := Module[{c,d, Q, qw, qxyz},
+(
+   c = Cross[v1, v2];
+   d = Dot[v1, v2];
+   qw = Sqrt[2(1 + d)]/2;
+   qxyz = c/Sqrt[2(1 + d)];
+   If[simpl, Q = QCreate[FullSimplify[qw], FullSimplify[qxyz[[1]]], FullSimplify[qxyz[[2]]], FullSimplify[qxyz[[3]]]], 
+   Q = QCreate[qw, qxyz[[1]], qxyz[[2]], qxyz[[3]]]];
+   Return[Q]
+)]
+
 QConjugate[Q_] := Flatten[{ Q[[1]], -1*Q[[2 ;; 4]] }]
 
 QInverse[Q_] := QConjugate[Q] / Norm[Q]^2
@@ -151,12 +164,19 @@ Return[DQTimes[DQTimes[DQ, DP], DQConjugate2[DQ]]];
 )
 ]
 
-DQRigidTransform[p_, raxis_, theta_, t_] := Module[{QR, QT, DQ},
+DQRigidTransform[p_, raxis_, theta_, t_] := Module[{Qt, Qp, QR, QRpR},
 (
-QR = QCreate[Cos[theta/2], Sin[theta/2]Normalize[raxis]];
-QT = QCreate[0, t];
-DQ = DQCreate[QR, 1/2 QTimes[QT, QR]];
-Return[DQSandwich[DQ, p]];
+   Qt = QCreate[0, t];
+   Qp = QCreate[0, p];
+   QR = QCreate[Cos[theta/2], Sin[theta/2] raxis[[1]], Sin[theta/2] raxis[[2]], Sin[theta/2] raxis[[3]]];
+   QRpR = QTimes[QTimes[QR, Qp], QConjugate[QR]];
+   Return[DQCreate[QCreate[1, 0, 0, 0], QCreate[0, QV[QAdd[QRpR, Qt]]]]]
+(*
+   QR = QCreate[Cos[theta/2], Sin[theta/2]Normalize[raxis]];
+   QT = QCreate[0, t];
+   DQ = DQCreate[QR, 1/2 QTimes[QT, QR]];
+   Return[DQSandwich[DQ, p]];
+*)   
 )]
 
 DQConjugate[DQ_] := { QConjugate[DQ[[1]]], QConjugate[DQ[[2]]] }
@@ -167,10 +187,13 @@ DQDualConjugate[DQ_] := { DQ[[1]], -1*DQ[[2]]}
 
 DQNorm[DQ_] := Sqrt[DQTimes[DQ, DQConjugate[DQ]]]
 
-DQString[DQ_,format_:TraditionalForm] := QString[DQ[[1]], format]<>" + ϵ"<>QString[DQ[[2]], format]
+DQString[DQ_,format_:TraditionalForm] := QString[DQ[[1]], format]<>" + \[Epsilon]"<>QString[DQ[[2]], format]
 
-DQStringCollect[DQ_, scalar_,format_:TraditionalForm] := QStringCollect[DQ[[1]], scalar, format]<>" + "<>"ϵ"QStringCollect[DQ[[2]], scalar, format]
+DQStringCollect[DQ_, scalar_,format_:TraditionalForm] := QStringCollect[DQ[[1]], scalar, format]<>" + "<>"\[Epsilon]"QStringCollect[DQ[[2]], scalar, format]
 
 End[]  (* Private*)
 
 EndPackage[] 
+
+
+
