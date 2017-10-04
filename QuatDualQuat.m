@@ -30,6 +30,8 @@ If[Not@ValueQ[QRotate::usage],QRotate::usage = "QRotate[[p, axis, angle] returns
 
 If[Not@ValueQ[QRotateBetween::usage],QRotateBetween::usage = "QRotateBetween[v1, v2, simplify:True] returns the quaternion as a 4-list representing the shortest arc rotation between two vectors v1 (3-list) and v2 (3-list). simplify specifies whether to run FullSimplify on the quaternion components."];
 
+If[Not@ValueQ[QRotationMatrix::usage],QRotationMatrix::usage = "QRotationMatrix[Q] returns the 3x3 matrix representing the rotation specified by quaternion Q (4-list)."];
+
 If[Not@ValueQ[QConjugate::usage],QConjugate::usage = "QConjugate[Q] returns the quaternion as a 4-list representing the conjugate of Q."];
 
 If[Not@ValueQ[QInverse::usage],QInverse::usage = "QInverse[Q] returns the quaternion as a 4-list representing the inverse of Q."];
@@ -97,7 +99,7 @@ QTimes[Q1_, Q2_] := Flatten[{ Q1[[1]]*Q2[[1]] - Dot[Q1[[2 ;; 4]], Q2[[2 ;; 4]]],
 
 QSandwich[Q_, P_] := QTimes[QTimes[Q, P], QConjugate[Q]]
 
-QRotate[p_, axis_, angle_] := { 0, (1 - Cos[angle]) Dot[axis, p] axis + Cos[angle] p + Sin[angle] Cross[axis, p] }
+QRotate[p_, axis_, angle_] := Flatten[{ 0, (1 - Cos[angle]) Dot[axis, p] axis + Cos[angle] p + Sin[angle] Cross[axis, p] }]
 
 QRotateBetween[v1_, v2_, simpl_:True] := Module[{c,d, Q, qw, qxyz},
 (
@@ -108,6 +110,18 @@ QRotateBetween[v1_, v2_, simpl_:True] := Module[{c,d, Q, qw, qxyz},
    If[simpl, Q = QCreate[FullSimplify[qw], FullSimplify[qxyz[[1]]], FullSimplify[qxyz[[2]]], FullSimplify[qxyz[[3]]]], 
    Q = QCreate[qw, qxyz[[1]], qxyz[[2]], qxyz[[3]]]];
    Return[Q]
+)]
+
+QRotationMatrix[Q_] := Module[ {qw, qx, qy, qz, R},
+(
+   qw = Q[[1]];
+   qx = Q[[2]];
+   qy = Q[[3]];
+   qz = Q[[4]];
+   R = { { 1 - 2*qy^2 - 2*qz^2, 2*qx*qy - 2*qz*qw, 2*qx*qz + 2*qy*qw },
+         { 2*qx*qy + 2*qz*qw, 1 - 2*qx^2 - 2*qz^2, 2*qy*qz - 2*qx*qw },
+         { 2*qx*qz - 2*qy*qw, 2*qy*qz + 2*qx*qw, 1 - 2*qx^2 - 2*qy^2 } };
+   Return[R]       
 )]
 
 QConjugate[Q_] := Flatten[{ Q[[1]], -1*Q[[2 ;; 4]] }]
@@ -194,6 +208,9 @@ DQStringCollect[DQ_, scalar_,format_:TraditionalForm] := QStringCollect[DQ[[1]],
 End[]  (* Private*)
 
 EndPackage[] 
+
+
+
 
 
 

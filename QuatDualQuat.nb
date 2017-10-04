@@ -3,24 +3,46 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[         0,          0]
-NotebookDataLength[     23979,        566]
-NotebookOptionsPosition[     22886,        532]
-NotebookOutlinePosition[     23245,        548]
-CellTagsIndexPosition[     23202,        545]
+NotebookDataLength[     25384,        599]
+NotebookOptionsPosition[     24290,        565]
+NotebookOutlinePosition[     24646,        581]
+CellTagsIndexPosition[     24603,        578]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
-Cell[BoxData[{
+Cell[BoxData[
  RowBox[{
-  RowBox[{"AppendTo", "[", 
-   RowBox[{"$Path", ",", 
-    RowBox[{"FileNameJoin", "[", 
-     RowBox[{"{", 
-      RowBox[{"$HomeDirectory", ",", "\"\<mathematica\>\""}], "}"}], "]"}]}], 
-   "]"}], ";"}], "\[IndentingNewLine]", "$Path"}], "Input",
- CellChangeTimes->{{3.71585949879044*^9, 
-  3.715859506770486*^9}},ExpressionUUID->"62c56bc2-4981-49f2-a22d-\
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Assumes", " ", "symlink", " ", "or", " ", "copy", " ", "of", " ", 
+    RowBox[{"QuatDualQuat", ".", "m"}], " ", "is", " ", "in", " ", 
+    RowBox[{
+     RowBox[{"{", "homedir", "}"}], "/", "mathematica"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Count", "[", 
+        RowBox[{"$Path", ",", " ", 
+         RowBox[{"FileNameJoin", "[", 
+          RowBox[{"{", 
+           RowBox[{"$HomeDirectory", ",", "\"\<mathematica\>\""}], "}"}], 
+          "]"}]}], "]"}], " ", "\[Equal]", " ", "0"}], ",", " ", 
+      "\[IndentingNewLine]", 
+      RowBox[{"AppendTo", "[", 
+       RowBox[{"$Path", ",", 
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{"$HomeDirectory", ",", "\"\<mathematica\>\""}], "}"}], 
+         "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", "\"\<Already in $Path\>\"", "]"}]}], "]"}], ";"}],
+    "\[IndentingNewLine]", "$Path", "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.71585949879044*^9, 3.715859506770486*^9}, {
+  3.7161098337357388`*^9, 
+  3.716109917592905*^9}},ExpressionUUID->"62c56bc2-4981-49f2-a22d-\
 076efb8876d6"],
 
 Cell[BoxData[""], "Input",
@@ -212,9 +234,10 @@ Cell[BoxData[{
      FractionBox["1", 
       RowBox[{"Sqrt", "[", "2", "]"}]]}], "}"}]}], 
   ";"}], "\[IndentingNewLine]", 
- RowBox[{"QRotate", "[", 
-  RowBox[{"p", ",", " ", "axis", ",", " ", 
-   FractionBox["Pi", "2"]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Q1", " ", "=", " ", 
+  RowBox[{"QRotate", "[", 
+   RowBox[{"p", ",", " ", "axis", ",", " ", 
+    FractionBox["Pi", "2"]}], "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Clear", "[", 
    RowBox[{"p", ",", " ", "v"}], "]"}], ";"}], "\[IndentingNewLine]", 
@@ -223,18 +246,24 @@ Cell[BoxData[{
    RowBox[{"QCreate", "[", 
     RowBox[{"0", ",", " ", "2", ",", " ", "0", ",", " ", "0"}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"v", " ", "=", " ", 
-   RowBox[{"QCreate", "[", 
+ RowBox[{"v", " ", "=", " ", 
+  RowBox[{"QCreate", "[", 
+   RowBox[{
+    RowBox[{"Cos", "[", 
+     FractionBox["Pi", "4"], "]"}], ",", " ", 
     RowBox[{
-     RowBox[{"Cos", "[", 
-      FractionBox["Pi", "4"], "]"}], ",", " ", 
-     RowBox[{
-      RowBox[{"Sin", "[", 
-       FractionBox["Pi", "4"], "]"}], " ", "axis"}]}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"QSandwich", "[", 
-  RowBox[{"v", ",", " ", "p"}], "]"}], "\[IndentingNewLine]", 
+     RowBox[{"Sin", "[", 
+      FractionBox["Pi", "4"], "]"}], " ", "axis"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Q2", " ", "=", " ", 
+  RowBox[{"QSandwich", "[", 
+   RowBox[{"v", ",", " ", "p"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"R", " ", "=", " ", 
+  RowBox[{"QRotationMatrix", "[", "v", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"R", " ", ".", " ", 
+  RowBox[{"{", 
+   RowBox[{"2", ",", " ", "0", ",", " ", "0"}], 
+   "}"}]}], "\[IndentingNewLine]", 
  RowBox[{"Print", "[", 
   "\"\<Using Quaternions Package (Symbolic doesn't work)==\>\"", 
   "]"}], "\[IndentingNewLine]", 
@@ -291,7 +320,11 @@ Cell[BoxData[{
    3.714500805926443*^9}, {3.714500920067358*^9, 3.714501161176238*^9}, {
    3.7145012177342978`*^9, 3.7145012729734592`*^9}, {3.714501337984736*^9, 
    3.714501370092526*^9}, {3.714501414605502*^9, 3.714501429209628*^9}, 
-   3.714722538166175*^9},ExpressionUUID->"c99bc380-889c-47b8-83ec-\
+   3.714722538166175*^9, {3.7161099842322063`*^9, 3.7161100063050613`*^9}, {
+   3.716110194900305*^9, 3.716110197169186*^9}, {3.716110383883704*^9, 
+   3.716110407841263*^9}, {3.7161115708014183`*^9, 3.7161115984811563`*^9}, {
+   3.71611165101621*^9, 
+   3.7161116518585978`*^9}},ExpressionUUID->"c99bc380-889c-47b8-83ec-\
 124af86ce5b5"],
 
 Cell[BoxData[{
@@ -531,7 +564,7 @@ Cell[BoxData[{
 13b790a1d72f"]
 },
 WindowSize->{1280, 1024},
-WindowMargins->{{16, Automatic}, {-197, Automatic}},
+WindowMargins->{{0, Automatic}, {Automatic, 26}},
 Magnification->1.5,
 FrontEndVersion->"11.1 for Linux x86 (64-bit) (April 18, 2017)",
 StyleDefinitions->"Default.nb"
@@ -547,19 +580,19 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[400, 13, 395, 10, 83, "Input", "ExpressionUUID" -> \
+Cell[400, 13, 1264, 32, 235, "Input", "ExpressionUUID" -> \
 "62c56bc2-4981-49f2-a22d-076efb8876d6"],
-Cell[798, 25, 151, 3, 49, "Input", "ExpressionUUID" -> \
+Cell[1667, 47, 151, 3, 49, "Input", "ExpressionUUID" -> \
 "5e68e621-8666-492d-b139-fe51b0a71a03"],
-Cell[952, 30, 4954, 106, 1140, "Input", "ExpressionUUID" -> \
+Cell[1821, 52, 4954, 106, 1140, "Input", "ExpressionUUID" -> \
 "7fc86f9f-6d50-4762-8520-80b846942613"],
-Cell[5909, 138, 6588, 156, 1308, "Input", "ExpressionUUID" -> \
+Cell[6778, 160, 7123, 167, 1394, "Input", "ExpressionUUID" -> \
 "c99bc380-889c-47b8-83ec-124af86ce5b5"],
-Cell[12500, 296, 3375, 72, 644, "Input", "ExpressionUUID" -> \
+Cell[13904, 329, 3375, 72, 644, "Input", "ExpressionUUID" -> \
 "078044cd-7f2d-4398-ac63-199bf30f8b42"],
-Cell[15878, 370, 3515, 74, 710, "Input", "ExpressionUUID" -> \
+Cell[17282, 403, 3515, 74, 710, "Input", "ExpressionUUID" -> \
 "32f03180-13eb-4490-be3f-d950584bc060"],
-Cell[19396, 446, 3486, 84, 652, "Input", "ExpressionUUID" -> \
+Cell[20800, 479, 3486, 84, 978, "Input", "ExpressionUUID" -> \
 "5ca7a0b2-8179-49de-9271-13b790a1d72f"]
 }
 ]

@@ -31,6 +31,10 @@ _QSandwich[Q, P]_ returns the quaternion as a 4-list representing the multiplica
 
 _QRotate[[p, axis, angle]_ returns the quaternion as a 4-list representing the rotation angle around axis (3-list) of a point p (3-list).
 
+_QRotateBetween[v1, v2, simplify:True]_ returns the quaternion as a 4-list representing the shortest arc rotation between two vectors v1 (3-list) and v2 (3-list). simplify specifies whether to run FullSimplify on the quaternion components.
+
+_QRotationMatrix[Q]_ returns the 3x3 matrix representing the rotation specified by quaternion Q (4-list).
+
 _QConjugate[Q]_ returns the quaternion as a 4-list representing the conjugate of Q.
 
 _QInverse[Q]_ returns the quaternion as a 4-list representing the inverse of Q.
